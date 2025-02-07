@@ -21,4 +21,5 @@ def get_database_connection():
         f"{DB_CONFIG['DB_TYPE']}+{DB_CONFIG['DB_DRIVER']}://"
         f"{DB_CONFIG['USER']}:{DB_CONFIG['PASSWORD']}@"
         f"{DB_CONFIG['HOST']}:{DB_CONFIG['PORT']}/{DB_CONFIG['DATABASE']}"
+        f"{DB_CONFIG['DATABASE']}"
     )

@@ -21,7 +21,19 @@ def get_database_connection():
         f"{DB_CONFIG['DB_TYPE']}+{DB_CONFIG['DB_DRIVER']}://"
         f"{DB_CONFIG['USER']}:{DB_CONFIG['PASSWORD']}@"
         f"{DB_CONFIG['HOST']}:{DB_CONFIG['PORT']}/{DB_CONFIG['DATABASE']}"
-        f"{DB_CONFIG['DATABASE']}"
+    )
+    engine = create_engine(connection_url)
+    return engine
+
+def get_database_connection():
+    """Establishes a connection to the PostgreSQL database."""
+    engine = create_engine()
+    
+    # Construct the SQL query with fiedl selection and data filter
+    connection_url = (
+        f"{DB_CONFIG['DB_TYPE']}+{DB_CONFIG['DB_DRIVER']}://"
+        f"{DB_CONFIG['USER']}:{DB_CONFIG['PASSWORD']}@"
+        f"{DB_CONFIG['HOST']}:{DB_CONFIG['PORT']}/{DB_CONFIG['DATABASE']}"
     )
     engine = create_engine(connection_url)
     return engine

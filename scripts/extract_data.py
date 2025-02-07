@@ -23,3 +23,5 @@ def get_database_connection():
         f"{DB_CONFIG['HOST']}:{DB_CONFIG['PORT']}/{DB_CONFIG['DATABASE']}"
         f"{DB_CONFIG['DATABASE']}"
     )
+    engine = create_engine(connection_url)
+    return engine

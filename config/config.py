@@ -14,3 +14,7 @@ DB_CONFIG = {
     "PASSWORD": os.getenv("AWS_DB_PASSWORD"),
     "PORT": os.getenv("AWS_DB_PORT"),
 }
+
+# Database filtering parameters
+DATA_START_DATE = os.getenv("DATA_START_DATE")
+DATA_LIMIT = os.getenv("DATA_LIMIT")

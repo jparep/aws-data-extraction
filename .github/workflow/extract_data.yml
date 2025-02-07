@@ -1,0 +1,43 @@
+name: AWS Health Data Extraction CI/CD
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '0 12 * * *'  # Runs every day at 12 PM UTC
+
+jobs:
+  extract_health_data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install Dependencies
+        run: |
+          pip install -r scripts/requirements.txt
+
+      - name: Run Health Data Extraction
+        env:
+          AWS_DB_HOST: ${{ secrets.AWS_DB_HOST }}
+          AWS_DB_NAME: ${{ secrets.AWS_DB_NAME }}
+          AWS_DB_USER: ${{ secrets.AWS_DB_USER }}
+          AWS_DB_PASS: ${{ secrets.AWS_DB_PASS }}
+          AWS_DB_PORT: ${{ secrets.AWS_DB_PORT }}
+          DATA_START_DATE: ${{ secrets.DATA_START_DATE }}
+          DATA_LIMIT: ${{ secrets.DATA_LIMIT }}
+        run: |
+          python scripts/extract_health_data.py
+
+      - name: Upload Extracted CSV as an Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: filtered-health-data
+          path: filtered_health_data.csv

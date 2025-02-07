@@ -26,7 +26,7 @@ def get_database_connection():
     return engine
 
 def extract_data():
-    """Extracts health data from the PostgreSQL database and save it as SCV file."""
+    """Extracts health data from the PostgreSQL database and save it as CSV file."""
     engine = get_database_connection()
     
     # Construct SQL query with filtering parameters
@@ -36,5 +36,12 @@ def extract_data():
         WHERE created_at >= '{DATA_START_DATE}'
         LIMIT {DATA_LIMIT};
     """
-    data = pd.read_sql(query, engine)
-    return data
+    # Fetch data into Pandas DataFrame
+    df = pd.read_sql(query, engine)
+    # Save the filtered data as a CSV file
+    csv_file = "data/health_data.csv"
+    df.to_csv(csv_file, index=False)
+    print(f"Data succcessfully extracted and saved to {csv_file}")
+
+if __name__ == "__main__":
+    extract_data()

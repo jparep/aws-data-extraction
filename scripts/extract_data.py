@@ -25,15 +25,16 @@ def get_database_connection():
     engine = create_engine(connection_url)
     return engine
 
-def get_database_connection():
-    """Establishes a connection to the PostgreSQL database."""
-    engine = create_engine()
+def extract_data():
+    """Extracts health data from the PostgreSQL database and save it as SCV file."""
+    engine = get_database_connection()
     
-    # Construct the SQL query with fiedl selection and data filter
-    connection_url = (
-        f"{DB_CONFIG['DB_TYPE']}+{DB_CONFIG['DB_DRIVER']}://"
-        f"{DB_CONFIG['USER']}:{DB_CONFIG['PASSWORD']}@"
-        f"{DB_CONFIG['HOST']}:{DB_CONFIG['PORT']}/{DB_CONFIG['DATABASE']}"
-    )
-    engine = create_engine(connection_url)
-    return engine
+    # Construct SQL query with filtering parameters
+    query = f"""
+        SELECT {', '.join(HEALTH_DATA_FIELDS)}
+        FROM health_data
+        WHERE created_at >= '{DATA_START_DATE}'
+        LIMIT {DATA_LIMIT};
+    """
+    data = pd.read_sql(query, engine)
+    return data
